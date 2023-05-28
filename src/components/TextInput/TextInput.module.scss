@@ -1,0 +1,45 @@
+@use "../../styles/variables.scss" as vars;
+@use "../../styles/mixins.scss" as mixins;
+
+.root {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+
+  label {
+    margin-bottom: 4px;
+    padding-left: 16px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  input {
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 1px solid vars.$color-input-bg;
+    background-color: vars.$color-input-bg;
+    transition: all vars.$trans-default;
+    cursor: pointer;
+    outline: none;
+
+    &:hover,
+    &:focus {
+      background-color: vars.$color-input-focus;
+      border-color: vars.$color-input-focus;
+    }
+  }
+
+  &--invalid {
+    input {
+      border-color: red;
+    }
+  }
+
+  @include mixins.vp-tablet {
+    input {
+      padding: 6px 12px;
+    }
+  }
+}

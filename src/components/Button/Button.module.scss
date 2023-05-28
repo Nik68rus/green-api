@@ -1,0 +1,50 @@
+@use "../../styles/variables.scss" as vars;
+@use "../../styles/mixins.scss" as mixins;
+
+.root {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 6px;
+  color: vars.$color-default-white;
+  background-color: vars.$color-accent;
+  font-size: 16px;
+  line-height: 1.1;
+  padding: 10px 20px;
+  min-width: 100px;
+  cursor: pointer;
+  transition: all vars.$trans-default;
+  border: 1px solid transparent;
+  outline: none;
+
+  @include mixins.vp-tablet {
+    padding: 12px;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: darken(vars.$color-accent, 15%);
+    box-shadow: vars.$strong-shadow;
+  }
+
+  &:active {
+    background-color: darken(vars.$color-accent, 17%);
+    transform: translateY(1px);
+  }
+
+  &.outlined {
+    color: vars.$color-accent;
+    background-color: transparent;
+    border-color: vars.$color-accent;
+
+    &:hover {
+      background-color: vars.$color-accent;
+      color: vars.$color-default-white;
+    }
+
+    &:active {
+      background-color: darken(vars.$color-accent, 8%);
+    }
+  }
+}

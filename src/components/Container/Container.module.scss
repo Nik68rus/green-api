@@ -1,0 +1,20 @@
+@use "../../styles/mixins.scss" as mixins;
+@use "../../styles/variables.scss" as vars;
+
+.container {
+  width: 100%;
+  max-width: vars.$max-width;
+  margin: 0 auto;
+  padding-left: vars.$pd-desktop;
+  padding-right: vars.$pd-desktop;
+
+  @include mixins.vp-tablet {
+    padding-left: vars.$pd-tablet;
+    padding-right: vars.$pd-tablet;
+  }
+
+  @include mixins.vp-mobile {
+    padding-left: vars.$pd-mobile;
+    padding-right: vars.$pd-mobile;
+  }
+}

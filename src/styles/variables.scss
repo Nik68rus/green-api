@@ -1,0 +1,24 @@
+$max-width: 1920px;
+$pd-desktop: 30px;
+$pd-tablet: 20px;
+$pd-mobile: 10px;
+
+//Colors
+$color-default-black: black;
+$color-default-white: white;
+$color-accent: #4cae4f;
+$color-input-bg: #f5f8fa;
+$color-input-focus: #eef3f7;
+$color-danger: red;
+$color-border-light: #e4e6e8;
+
+// Typography
+// ---------------------------------
+$ff-montserrat: "Montserrat", "Arial", sans-serif;
+$ff-inter: "Inter", "Arial", sans-serif;
+
+$tf-default: ease;
+$trans-default: 0.3s $tf-default;
+
+$card-shadow: 0 8px 16px 0 rgba(143, 149, 178, 0.15);
+$strong-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
