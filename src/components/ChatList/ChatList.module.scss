@@ -3,4 +3,14 @@
 .root {
   flex: 0 0 30%;
   border-right: 2px solid vars.$color-border-light;
+  padding: 0 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.addBtn {
+  width: 100%;
+  display: inline-flex;
+  gap: 12px;
+  margin-top: auto;
 }

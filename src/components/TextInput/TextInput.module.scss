@@ -7,6 +7,10 @@
   flex-direction: column;
   margin-bottom: 20px;
 
+  &.noError {
+    margin-bottom: 0;
+  }
+
   label {
     margin-bottom: 4px;
     padding-left: 16px;

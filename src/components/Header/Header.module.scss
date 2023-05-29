@@ -3,6 +3,11 @@
   padding-bottom: 10px;
 }
 
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+
 .logo {
   display: flex;
   align-items: center;

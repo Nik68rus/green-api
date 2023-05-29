@@ -28,7 +28,6 @@ html {
 body {
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, $color-accent 20%, white 20%);
 }
 
 a {
@@ -52,4 +51,16 @@ button,
 [type="reset"],
 [type="submit"] {
   appearance: none;
+}
+
+#modal-root {
+  position: relative;
+  z-index: 10;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: linear-gradient(to bottom, $color-accent 20%, $color-bg 20%);
 }

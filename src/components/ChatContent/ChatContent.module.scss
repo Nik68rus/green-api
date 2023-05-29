@@ -1,3 +1,33 @@
 .root {
   flex: 1 1 70%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.history {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: flex-end;
+}
+
+.form {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  & > *:first-child {
+    flex-grow: 1;
+  }
+
+  input {
+    padding: 12px;
+  }
+
+  button {
+    min-width: auto;
+  }
 }

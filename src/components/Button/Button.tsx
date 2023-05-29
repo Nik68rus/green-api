@@ -1,12 +1,6 @@
-import React, {
-  MouseEvent,
-  FC,
-  PropsWithChildren,
-  useEffect,
-  useRef,
-} from "react";
+import { MouseEvent, FC, PropsWithChildren, useEffect, useRef } from "react";
 import styles from "./Button.module.scss";
-import cx from "classnames";
+import classNames from "classnames";
 
 interface ButtonProps {
   readonly variant?: "outlined" | "primary";
@@ -39,7 +33,7 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
       type={type}
       disabled={disabled}
       onClick={onClick}
-      className={cx(styles.root, className, styles[variant])}
+      className={classNames(styles.root, className, styles[variant])}
       ref={btnRef}
     >
       {children}

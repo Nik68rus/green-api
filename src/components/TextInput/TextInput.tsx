@@ -1,20 +1,21 @@
 import React from "react";
-import cx from "classnames";
 import styles from "./TextInput.module.scss";
+import classNames from "classnames";
 
 type TInputType = "email" | "password" | "text" | "number" | "tel";
 
 interface Props {
-  label?: string;
-  type: TInputType;
-  id: string;
-  name?: string;
-  value?: string | number;
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
-  placeholder?: string;
-  hint?: string;
-  disabled?: boolean;
-  className?: string;
+  readonly label?: string;
+  readonly type: TInputType;
+  readonly id: string;
+  readonly name?: string;
+  readonly value?: string | number;
+  readonly onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  readonly placeholder?: string;
+  readonly hint?: string;
+  readonly disabled?: boolean;
+  readonly className?: string;
+  readonly noError?: boolean;
 }
 
 export const TextInput = ({
@@ -28,9 +29,12 @@ export const TextInput = ({
   hint,
   disabled,
   className,
+  noError,
 }: Props) => {
   return (
-    <div className={cx(styles.root, className)}>
+    <div
+      className={classNames(styles.root, className, noError && styles.noError)}
+    >
       {label && <label htmlFor={id}>{label}</label>}
       <input
         type={type}

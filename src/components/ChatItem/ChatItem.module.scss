@@ -1,2 +1,24 @@
+@use "../../styles/variables.scss" as vars;
+
 .root {
+  padding: 12px 0;
+  border-bottom: 2px solid vars.$color-border-light;
+  cursor: pointer;
+  padding: 12px;
+  text-align: center;
+  transition: background-color vars.$trans-default;
+
+  &:first-of-type {
+    border-top: 2px solid vars.$color-border-light;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: vars.$color-hover;
+  }
+}
+
+.active {
+  background-color: vars.$color-bg;
+  pointer-events: none;
 }

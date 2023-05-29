@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Card.module.scss";
-import cx from "classnames";
+import classNames from "classnames";
 
 interface CardProps {
   tag?: "div" | "article" | "section";
@@ -16,7 +16,7 @@ const Card: React.FC<React.PropsWithChildren<CardProps>> = ({
   React.createElement(
     tag ?? "div",
     {
-      className: cx(className, styles.card),
+      className: classNames(className, styles.card),
     },
     children
   );
