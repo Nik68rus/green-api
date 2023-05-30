@@ -13,10 +13,12 @@ function App() {
   return (
     <div className="wrapper">
       <Header />
-      <Container htmlTag="section" className={styles.root}>
-        {authData ? <Messanger /> : <AuthForm />}
-      </Container>
-      <ToastContainer />
+      <main>
+        <Container htmlTag="section" className={styles.root}>
+          {authData ? <Messanger /> : <AuthForm />}
+        </Container>
+        <ToastContainer />
+      </main>
     </div>
   );
 }

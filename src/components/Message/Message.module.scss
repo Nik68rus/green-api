@@ -1,13 +1,47 @@
+@use "../../styles/variables.scss" as vars;
 .root {
+  position: relative;
   padding: 12px;
+  padding-bottom: 6px;
   border-radius: 8px;
-  background-color: beige;
+  max-width: 70%;
+  display: flex;
+  flex-direction: column;
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border: 16px solid transparent;
+  }
 }
 
 .outgoing {
   align-self: flex-end;
+  background-color: vars.$color-my-message;
+  color: vars.$color-default-white;
+
+  &::before {
+    border-top: 16px solid vars.$color-my-message;
+    top: 0;
+    right: -8px;
+  }
 }
 
 .incoming {
   align-self: flex-start;
+  background-color: vars.$color-incoming-message;
+
+  &::before {
+    border-top: 16px solid vars.$color-incoming-message;
+    top: 0;
+    left: -8px;
+  }
+}
+
+.time {
+  font-size: 10px;
+  margin-left: auto;
+  margin-top: 4px;
 }

@@ -63,4 +63,13 @@ button,
   flex-direction: column;
   height: 100vh;
   background: linear-gradient(to bottom, $color-accent 20%, $color-bg 20%);
+
+  header,
+  footer {
+    flex-shrink: 0;
+  }
+  main {
+    flex-grow: 1;
+    overflow: auto;
+  }
 }

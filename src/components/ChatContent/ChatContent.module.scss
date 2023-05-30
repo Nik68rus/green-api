@@ -1,3 +1,5 @@
+@use "../../styles/mixins.scss";
+
 .root {
   flex: 1 1 70%;
   padding: 20px;
@@ -7,11 +9,22 @@
   gap: 12px;
 }
 
+.title {
+  margin-bottom: 10px;
+}
+
 .history {
+  flex-grow: 1;
+  overflow: auto;
+  padding: 0 8px;
+  @include mixins.hidden-scrollbar;
+}
+
+.messages {
+  min-height: 100%;
   display: flex;
   gap: 10px;
   flex-direction: column;
-  flex-grow: 1;
   justify-content: flex-end;
 }
 

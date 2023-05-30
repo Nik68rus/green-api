@@ -44,6 +44,7 @@ export const ChatContent: React.FC = () => {
         chat: activeChat,
         text,
         id: data.idMessage,
+        time: new Date().toLocaleTimeString("ru-Ru", { timeStyle: "short" }),
       });
       setText("");
     } catch (error) {
@@ -54,7 +55,12 @@ export const ChatContent: React.FC = () => {
   const deleteNotificationHandler = useCallback(
     async (receiptId: string) => {
       try {
-        await deleteNotification(idInstance, apiTokenInstance, receiptId);
+        const data = await deleteNotification(
+          idInstance,
+          apiTokenInstance,
+          receiptId
+        );
+        return data;
       } catch (error) {
         handleError(error);
       }
@@ -63,21 +69,27 @@ export const ChatContent: React.FC = () => {
   );
 
   const recieveNotificationHandler = useCallback(async () => {
-    console.log("polling");
+    let deleted = false;
     try {
       const data = await recieveNotification(idInstance, apiTokenInstance);
-      console.log(data);
-      if (data?.receiptId) await deleteNotificationHandler(data.receiptId);
+      if (data?.receiptId) {
+        const { result } = await deleteNotificationHandler(data.receiptId);
+        deleted = result;
+      }
 
       if (
+        deleted &&
         data?.body?.typeWebhook === "incomingMessageReceived" &&
         data?.body?.messageData?.textMessageData?.textMessage
       ) {
+        console.log(data);
+
         addMessage({
           type: "incoming",
           chat: data.body.senderData.chatId.split("@")[0],
           text: data.body.messageData.textMessageData.textMessage,
           id: data.body.idMessage,
+          time: new Date().toLocaleTimeString("ru-Ru", { timeStyle: "short" }),
         });
       }
     } catch (error) {
@@ -86,7 +98,7 @@ export const ChatContent: React.FC = () => {
   }, [idInstance, apiTokenInstance, deleteNotificationHandler, addMessage]);
 
   useEffect(() => {
-    const intervalId = setInterval(recieveNotificationHandler, 3000);
+    const intervalId = setInterval(recieveNotificationHandler, 1000);
     return () => clearInterval(intervalId);
   }, [recieveNotificationHandler]);
 
@@ -100,11 +112,15 @@ export const ChatContent: React.FC = () => {
 
   return (
     <div className={styles.root}>
-      <Heading level={3}>Переписка c {activeChat}</Heading>
+      <Heading level={3} className={styles.title}>
+        Переписка c {activeChat}
+      </Heading>
       <div className={styles.history}>
-        {messages.map((msg) => (
-          <Meassage key={msg.id} item={msg} />
-        ))}
+        <div className={styles.messages}>
+          {messages.map((msg) => (
+            <Meassage key={msg.id} item={msg} />
+          ))}
+        </div>
       </div>
       <form onSubmit={sendHandler} className={styles.form}>
         <TextInput

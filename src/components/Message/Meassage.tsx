@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import classNames from "classnames";
 import { IMessage } from "../../types";
 
@@ -9,16 +9,23 @@ interface MessageProps {
 }
 
 export const Meassage: React.FC<MessageProps> = ({ item }) => {
-  const { type, text } = item;
+  const messageRef = useRef<HTMLDivElement>(null);
+  const { type, text, time } = item;
+
+  useEffect(() => {
+    messageRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
 
   return (
     <div
+      ref={messageRef}
       className={classNames(
         styles.root,
         type === "outgoing" ? styles.outgoing : styles.incoming
       )}
     >
       {text}
+      <div className={styles.time}>{time}</div>
     </div>
   );
 };

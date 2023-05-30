@@ -4,7 +4,6 @@ import { TextInput } from "../TextInput/TextInput";
 import { ButtonGroup } from "../ButtonGroup/ButtonGroup";
 import { Button } from "../Button/Button";
 import { Modal } from "../Modal/Modal";
-
 interface ModalProps {
   onClose: () => void;
 }

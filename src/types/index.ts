@@ -10,7 +10,7 @@ export interface IMessage {
   type: "outgoing" | "incoming";
   chat: string;
   text: string;
-  timestamp?: Date;
+  time: string;
 }
 
 export interface IAuthData {

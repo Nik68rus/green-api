@@ -4,12 +4,12 @@ import classNames from "classnames";
 
 type TInputType = "email" | "password" | "text" | "number" | "tel";
 
-interface Props {
+export interface TextInputProps {
   readonly label?: string;
   readonly type: TInputType;
   readonly id: string;
   readonly name?: string;
-  readonly value?: string | number;
+  readonly value?: string;
   readonly onChange?: React.ChangeEventHandler<HTMLInputElement>;
   readonly placeholder?: string;
   readonly hint?: string;
@@ -30,7 +30,7 @@ export const TextInput = ({
   disabled,
   className,
   noError,
-}: Props) => {
+}: TextInputProps) => {
   return (
     <div
       className={classNames(styles.root, className, noError && styles.noError)}
