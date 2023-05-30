@@ -8,7 +8,7 @@ interface ContainerProps {
   className?: string;
 }
 
-const Container: React.FC<React.PropsWithChildren<ContainerProps>> = ({
+export const Container: React.FC<React.PropsWithChildren<ContainerProps>> = ({
   className = "",
   htmlTag = "div",
   children,
@@ -21,5 +21,3 @@ const Container: React.FC<React.PropsWithChildren<ContainerProps>> = ({
     children
   );
 };
-
-export default Container;

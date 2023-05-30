@@ -1,9 +1,10 @@
 import { useCallback, useEffect } from "react";
+import classNames from "classnames";
 import { createPortal } from "react-dom";
 import { FaTimes } from "react-icons/fa";
-import styles from "./Modal.module.scss";
-import classNames from "classnames";
 import { Heading } from "../Heading/Heading";
+
+import styles from "./Modal.module.scss";
 
 type ModalProps = {
   onClose: () => void;

@@ -1,13 +1,14 @@
 import { useContext } from "react";
-import styles from "./ChatItem.module.scss";
-import ChatsContext from "../../context/ChatsContext";
 import classNames from "classnames";
+import ChatsContext from "../../context/ChatsContext";
+
+import styles from "./ChatItem.module.scss";
 
 interface ChatItemProps {
   tel: string;
 }
 
-const ChatItem = ({ tel }: ChatItemProps) => {
+export const ChatItem = ({ tel }: ChatItemProps) => {
   const { setActiveChat, activeChat } = useContext(ChatsContext);
 
   return (
@@ -19,5 +20,3 @@ const ChatItem = ({ tel }: ChatItemProps) => {
     </div>
   );
 };
-
-export default ChatItem;

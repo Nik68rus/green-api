@@ -1,13 +1,14 @@
 import React from "react";
-import styles from "./Message.module.scss";
 import classNames from "classnames";
 import { IMessage } from "../../types";
+
+import styles from "./Message.module.scss";
 
 interface MessageProps {
   item: IMessage;
 }
 
-const Meassage: React.FC<MessageProps> = ({ item }) => {
+export const Meassage: React.FC<MessageProps> = ({ item }) => {
   const { type, text } = item;
 
   return (
@@ -21,5 +22,3 @@ const Meassage: React.FC<MessageProps> = ({ item }) => {
     </div>
   );
 };
-
-export default Meassage;

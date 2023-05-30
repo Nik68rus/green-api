@@ -1,15 +1,15 @@
 import { useCallback, useContext, useState } from "react";
 
 import ChatsContext from "../../context/ChatsContext";
-import Button from "../Button/Button";
-import AddContactModal from "../AddContactModal/AddContactModal";
-import ChatItem from "../ChatItem/ChatItem";
-import InfoMessage from "../InfoMessage/InfoMessage";
-
-import styles from "./ChatList.module.scss";
+import { Button } from "../Button/Button";
+import { AddContactModal } from "../AddContactModal/AddContactModal";
+import { ChatItem } from "../ChatItem/ChatItem";
+import { InfoMessage } from "../InfoMessage/InfoMessage";
 import { FaPlus } from "react-icons/fa";
 
-const ChatList: React.FC = () => {
+import styles from "./ChatList.module.scss";
+
+export const ChatList: React.FC = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const { contacts } = useContext(ChatsContext);
 
@@ -38,5 +38,3 @@ const ChatList: React.FC = () => {
     </>
   );
 };
-
-export default ChatList;

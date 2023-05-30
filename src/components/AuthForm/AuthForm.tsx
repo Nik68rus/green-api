@@ -1,22 +1,23 @@
 import { useCallback, useContext, useState } from "react";
-import Button from "../Button/Button";
-import Card from "../Card/Card";
-import { TextInput } from "../TextInput/TextInput";
-import styles from "./AuthForm.module.scss";
-import classNames from "classnames";
 import { toast } from "react-toastify";
-import { ButtonGroup } from "../ButtonGroup/ButtonGroup";
-import { IAuthData, TInstanceState } from "../../types";
+import classNames from "classnames";
+
+import { checkStatus } from "../../services/greenapi";
 import AuthContext from "../../context/AuthContext";
+import { Button } from "../Button/Button";
+import { Card } from "../Card/Card";
+import { TextInput } from "../TextInput/TextInput";
+import { ButtonGroup } from "../ButtonGroup/ButtonGroup";
+import { IAuthData } from "../../types";
+import { Spinner } from "../Spinner/Spinner";
+
+import styles from "./AuthForm.module.scss";
+import { handleError } from "../../helpers/error";
 
 const INITIAL_STATE: IAuthData = {
   idInstance: import.meta.env.VITE_API_ID,
   apiTokenInstance: import.meta.env.VITE_API_TOKEN,
 };
-
-interface GetStateResponse {
-  stateInstance: TInstanceState;
-}
 
 const MESSAGES = {
   notAuthorized:
@@ -26,9 +27,10 @@ const MESSAGES = {
   starting: "Аккаунт в процессе запуска! Попробуйте позже!",
 };
 
-const AuthForm: React.FC = () => {
+export const AuthForm: React.FC = () => {
   const { logIn } = useContext(AuthContext);
   const [formData, setFormData] = useState<IAuthData>(INITIAL_STATE);
+  const [loading, setLoading] = useState(false);
 
   const inputChangeHandler: React.ChangeEventHandler<HTMLInputElement> =
     useCallback(({ target }) => {
@@ -36,20 +38,30 @@ const AuthForm: React.FC = () => {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }, []);
 
-  const submitHandler: React.FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
-    const response = await fetch(
-      `https://api.green-api.com/waInstance${formData.idInstance}/getStateInstance/${formData.apiTokenInstance}`
-    );
+  const submitHandler: React.FormEventHandler<HTMLFormElement> = useCallback(
+    async (e) => {
+      e.preventDefault();
+      setLoading(true);
 
-    const data = (await response.json()) as GetStateResponse;
+      try {
+        const { stateInstance } = await checkStatus(
+          formData.idInstance,
+          formData.apiTokenInstance
+        );
 
-    if (data.stateInstance === "authorized") {
-      logIn(formData);
-    } else {
-      toast.warning(MESSAGES[data.stateInstance]);
-    }
-  };
+        if (stateInstance === "authorized") {
+          logIn(formData);
+        } else {
+          toast.warning(MESSAGES[stateInstance]);
+        }
+      } catch (error) {
+        handleError(error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [formData, logIn]
+  );
 
   const resetHandler = useCallback(() => {
     setFormData(INITIAL_STATE);
@@ -58,6 +70,7 @@ const AuthForm: React.FC = () => {
   return (
     <Card className={classNames(styles.root, "p-4")}>
       <h1>Авторизация</h1>
+      {loading && <Spinner />}
       <form onSubmit={submitHandler}>
         <TextInput
           label="ID"
@@ -85,5 +98,3 @@ const AuthForm: React.FC = () => {
     </Card>
   );
 };
-
-export default AuthForm;

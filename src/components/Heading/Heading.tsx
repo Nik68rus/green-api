@@ -1,6 +1,7 @@
 import React from "react";
-import styles from "./Heading.module.scss";
 import classNames from "classnames";
+
+import styles from "./Heading.module.scss";
 
 interface HeadingProps {
   level?: 1 | 2 | 3 | 4 | 5;

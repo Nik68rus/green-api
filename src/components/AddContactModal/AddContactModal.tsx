@@ -1,15 +1,15 @@
 import React, { useContext, useState } from "react";
+import ChatsContext from "../../context/ChatsContext";
 import { TextInput } from "../TextInput/TextInput";
 import { ButtonGroup } from "../ButtonGroup/ButtonGroup";
-import Button from "../Button/Button";
+import { Button } from "../Button/Button";
 import { Modal } from "../Modal/Modal";
-import ChatsContext from "../../context/ChatsContext";
 
 interface ModalProps {
   onClose: () => void;
 }
 
-const AddContactModal: React.FC<ModalProps> = ({ onClose }) => {
+export const AddContactModal: React.FC<ModalProps> = ({ onClose }) => {
   const { addContact } = useContext(ChatsContext);
   const [number, setNumber] = useState("");
 
@@ -40,5 +40,3 @@ const AddContactModal: React.FC<ModalProps> = ({ onClose }) => {
     </Modal>
   );
 };
-
-export default AddContactModal;

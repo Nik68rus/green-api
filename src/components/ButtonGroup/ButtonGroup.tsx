@@ -1,6 +1,7 @@
 import React from "react";
-import styles from "./ButtonGroup.module.scss";
 import classNames from "classnames";
+
+import styles from "./ButtonGroup.module.scss";
 
 interface ButtonGroupProps {
   className?: string;

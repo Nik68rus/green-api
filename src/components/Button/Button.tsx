@@ -1,6 +1,7 @@
 import { MouseEvent, FC, PropsWithChildren, useEffect, useRef } from "react";
-import styles from "./Button.module.scss";
 import classNames from "classnames";
+
+import styles from "./Button.module.scss";
 
 interface ButtonProps {
   readonly variant?: "outlined" | "primary";
@@ -10,7 +11,7 @@ interface ButtonProps {
   readonly className?: string;
 }
 
-const Button: FC<PropsWithChildren<ButtonProps>> = ({
+export const Button: FC<PropsWithChildren<ButtonProps>> = ({
   variant = "primary",
   type = "button",
   disabled,
@@ -40,5 +41,3 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
     </button>
   );
 };
-
-export default Button;

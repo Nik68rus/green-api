@@ -1,11 +1,13 @@
-import Container from "../Container/Container";
-import logo from "../../assets/logo.png";
-import styles from "./Header.module.scss";
-import Button from "../Button/Button";
 import { useContext } from "react";
-import AuthContext from "../../context/AuthContext";
 
-const Header = () => {
+import AuthContext from "../../context/AuthContext";
+import { Container } from "../Container/Container";
+import { Button } from "../Button/Button";
+import logo from "../../assets/logo.png";
+
+import styles from "./Header.module.scss";
+
+export const Header = () => {
   const { authData, logOut } = useContext(AuthContext);
 
   return (
@@ -20,5 +22,3 @@ const Header = () => {
     </header>
   );
 };
-
-export default Header;

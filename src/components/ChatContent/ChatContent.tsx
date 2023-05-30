@@ -1,5 +1,4 @@
 import { useCallback, useContext, useEffect, useState } from "react";
-import { toast } from "react-toastify";
 
 import AuthContext from "../../context/AuthContext";
 import ChatsContext from "../../context/ChatsContext";
@@ -7,13 +6,19 @@ import MessagesContext from "../../context/MessagesContext";
 import { BsSend } from "react-icons/bs";
 import { Heading } from "../Heading/Heading";
 import { TextInput } from "../TextInput/TextInput";
-import Button from "../Button/Button";
-import Meassage from "../Message/Meassage";
+import { Button } from "../Button/Button";
+import { Meassage } from "../Message/Meassage";
+import { InfoMessage } from "../InfoMessage/InfoMessage";
 
 import styles from "./ChatContent.module.scss";
-import InfoMessage from "../InfoMessage/InfoMessage";
+import {
+  deleteNotification,
+  recieveNotification,
+  sendMessage,
+} from "../../services/greenapi";
+import { handleError } from "../../helpers/error";
 
-const ChatContent: React.FC = () => {
+export const ChatContent: React.FC = () => {
   const { getChatMessages, addMessage } = useContext(MessagesContext);
   const { activeChat } = useContext(ChatsContext);
   const { authData } = useContext(AuthContext);
@@ -25,47 +30,33 @@ const ChatContent: React.FC = () => {
 
   const sendHandler: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    const body = {
-      chatId: activeChat + "@c.us",
-      message: text,
-    };
+    if (!activeChat || text.length === 0) return;
 
-    const response = await fetch(
-      `https://api.green-api.com/waInstance${idInstance}/sendMessage/${apiTokenInstance}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      }
-    );
-
-    const data = await response.json();
-
-    if (response.ok) {
+    try {
+      const data = await sendMessage(
+        idInstance,
+        apiTokenInstance,
+        activeChat,
+        text
+      );
       addMessage({
         type: "outgoing",
-        chat: activeChat as string,
+        chat: activeChat,
         text,
         id: data.idMessage,
       });
       setText("");
-    } else {
-      toast.error("Что-то пошло не так! Повторите отправку!");
+    } catch (error) {
+      handleError(error);
     }
   };
 
   const deleteNotificationHandler = useCallback(
     async (receiptId: string) => {
-      console.log("deleting");
-      const response = await fetch(
-        `https://api.green-api.com/waInstance${idInstance}/deleteNotification/${apiTokenInstance}/${receiptId}`,
-        { method: "DELETE" }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok || !data.result) {
-        toast.error("Что-то пошло не так!");
+      try {
+        await deleteNotification(idInstance, apiTokenInstance, receiptId);
+      } catch (error) {
+        handleError(error);
       }
     },
     [apiTokenInstance, idInstance]
@@ -73,26 +64,25 @@ const ChatContent: React.FC = () => {
 
   const recieveNotificationHandler = useCallback(async () => {
     console.log("polling");
+    try {
+      const data = await recieveNotification(idInstance, apiTokenInstance);
+      console.log(data);
+      if (data?.receiptId) await deleteNotificationHandler(data.receiptId);
 
-    const response = await fetch(
-      `https://api.green-api.com/waInstance${idInstance}/receiveNotification/${apiTokenInstance}`
-    );
-    const data = await response.json();
-    console.log(data);
-    if (data?.receiptId) await deleteNotificationHandler(data.receiptId);
-
-    if (
-      data?.body?.typeWebhook === "incomingMessageReceived" &&
-      data?.body?.messageData?.textMessageData?.textMessage
-    ) {
-      addMessage({
-        type: "incoming",
-        chat: data.body.senderData.chatId.split("@")[0],
-        text: data.body.messageData.textMessageData.textMessage,
-        id: data.body.idMessage,
-      });
+      if (
+        data?.body?.typeWebhook === "incomingMessageReceived" &&
+        data?.body?.messageData?.textMessageData?.textMessage
+      ) {
+        addMessage({
+          type: "incoming",
+          chat: data.body.senderData.chatId.split("@")[0],
+          text: data.body.messageData.textMessageData.textMessage,
+          id: data.body.idMessage,
+        });
+      }
+    } catch (error) {
+      handleError(error);
     }
-    if (!response.ok) return toast.error("Что-то пошло не так");
   }, [idInstance, apiTokenInstance, deleteNotificationHandler, addMessage]);
 
   useEffect(() => {
@@ -131,5 +121,3 @@ const ChatContent: React.FC = () => {
     </div>
   );
 };
-
-export default ChatContent;

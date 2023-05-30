@@ -1,13 +1,13 @@
 import { useContext } from "react";
 import ChatsContext from "../../context/ChatsContext";
-import Card from "../Card/Card";
-import ChatContent from "../ChatContent/ChatContent";
-import ChatList from "../ChatList/ChatList";
-import InfoMessage from "../InfoMessage/InfoMessage";
+import { Card } from "../Card/Card";
+import { ChatContent } from "../ChatContent/ChatContent";
+import { ChatList } from "../ChatList/ChatList";
+import { InfoMessage } from "../InfoMessage/InfoMessage";
 
 import styles from "./Messanger.module.scss";
 
-const Messanger: React.FC = () => {
+export const Messanger: React.FC = () => {
   const { activeChat } = useContext(ChatsContext);
   return (
     <Card tag="section" className={styles.root}>
@@ -20,5 +20,3 @@ const Messanger: React.FC = () => {
     </Card>
   );
 };
-
-export default Messanger;

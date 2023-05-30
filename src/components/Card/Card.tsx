@@ -1,6 +1,7 @@
 import React from "react";
-import styles from "./Card.module.scss";
 import classNames from "classnames";
+
+import styles from "./Card.module.scss";
 
 interface CardProps {
   tag?: "div" | "article" | "section";
@@ -8,7 +9,7 @@ interface CardProps {
   children: React.ReactNode;
 }
 
-const Card: React.FC<React.PropsWithChildren<CardProps>> = ({
+export const Card: React.FC<React.PropsWithChildren<CardProps>> = ({
   tag,
   className,
   children,
@@ -20,5 +21,3 @@ const Card: React.FC<React.PropsWithChildren<CardProps>> = ({
     },
     children
   );
-
-export default Card;
