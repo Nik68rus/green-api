@@ -26,6 +26,10 @@
   gap: 3px;
   overflow-y: auto;
   @include mixins.hidden-scrollbar;
+
+  @include mixins.vp-mobile {
+    padding-bottom: 10px;
+  }
 }
 
 .addBtn {
