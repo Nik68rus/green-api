@@ -1,4 +1,4 @@
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 
 import { actualizeSettings, checkStatus } from "../../services/greenapi";
@@ -32,6 +32,20 @@ export const AuthForm: React.FC = () => {
   const [formData, setFormData] = useState<IAuthData>(INITIAL_STATE);
   const [loading, setLoading] = useState(false);
   const [qrModalVisible, setQrModalVisible] = useState(false);
+
+  const emptyField = useMemo(
+    () =>
+      formData.apiTokenInstance.length === 0 ||
+      formData.idInstance.length === 0,
+    [formData.apiTokenInstance, formData.idInstance]
+  );
+
+  const notEmptyField = useMemo(
+    () =>
+      formData.apiTokenInstance.length !== 0 ||
+      formData.idInstance.length !== 0,
+    [formData.apiTokenInstance, formData.idInstance]
+  );
 
   const inputChangeHandler: React.ChangeEventHandler<HTMLInputElement> =
     useCallback(({ target }) => {
@@ -104,8 +118,15 @@ export const AuthForm: React.FC = () => {
           onChange={inputChangeHandler}
         />
         <ButtonGroup>
-          <Button type="submit">OK</Button>
-          <Button type="reset" variant="outlined" onClick={resetHandler}>
+          <Button type="submit" disabled={emptyField}>
+            OK
+          </Button>
+          <Button
+            type="reset"
+            variant="outlined"
+            onClick={resetHandler}
+            disabled={!notEmptyField}
+          >
             Отмена
           </Button>
         </ButtonGroup>
