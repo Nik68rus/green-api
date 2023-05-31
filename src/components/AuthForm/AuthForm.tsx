@@ -80,7 +80,9 @@ export const AuthForm: React.FC = () => {
           toast.warning(MESSAGES[stateInstance]);
         }
       } catch (error) {
-        handleError(error);
+        handleError(
+          new Error("Ошибка авторизации! Проверьте данные и попробуйте снова!")
+        );
       } finally {
         setLoading(false);
       }
