@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 
 import AuthContext from "../../context/AuthContext";
 import ChatsContext from "../../context/ChatsContext";
@@ -24,29 +24,32 @@ export const ChatContent: React.FC = () => {
   const idInstance = authData?.idInstance || "";
   const apiTokenInstance = authData?.apiTokenInstance || "";
 
-  const sendHandler: React.FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
-    if (!activeChat || text.length === 0) return;
+  const sendHandler: React.FormEventHandler<HTMLFormElement> = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (!activeChat || text.length === 0) return;
 
-    try {
-      const data = await sendMessage(
-        idInstance,
-        apiTokenInstance,
-        activeChat,
-        text
-      );
-      addMessage({
-        type: "outgoing",
-        chat: activeChat,
-        text,
-        id: data.idMessage,
-        time: new Date().toLocaleTimeString("ru-Ru", { timeStyle: "short" }),
-      });
-      setText("");
-    } catch (error) {
-      handleError(error);
-    }
-  };
+      try {
+        const data = await sendMessage(
+          idInstance,
+          apiTokenInstance,
+          activeChat,
+          text
+        );
+        addMessage({
+          type: "outgoing",
+          chat: activeChat,
+          text,
+          id: data.idMessage,
+          time: new Date().toLocaleTimeString("ru-Ru", { timeStyle: "short" }),
+        });
+        setText("");
+      } catch (error) {
+        handleError(error);
+      }
+    },
+    [activeChat, addMessage, apiTokenInstance, idInstance, text]
+  );
 
   if (idInstance === "" || apiTokenInstance === "") {
     return (

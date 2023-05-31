@@ -8,7 +8,7 @@ interface MessageProps {
   item: IMessage;
 }
 
-export const Meassage: React.FC<MessageProps> = ({ item }) => {
+export const Meassage: React.FC<MessageProps> = React.memo(({ item }) => {
   const messageRef = useRef<HTMLDivElement>(null);
   const { type, text, time } = item;
 
@@ -28,4 +28,4 @@ export const Meassage: React.FC<MessageProps> = ({ item }) => {
       <div className={styles.time}>{time}</div>
     </div>
   );
-};
+});
