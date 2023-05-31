@@ -1,9 +1,3 @@
-@mixin vp-max {
-  @media (min-width: 1205px) {
-    @content;
-  }
-}
-
 @mixin vp-tablet {
   @media (max-width: 1024px) {
     @content;

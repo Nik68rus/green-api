@@ -3,6 +3,7 @@ import { createContext, useCallback, useState } from "react";
 interface IChatsContext {
   contacts: string[];
   activeChat: string | null;
+  setContacts: (contacts: string[]) => void;
   addContact: (tel: string) => void;
   setActiveChat: (tel: string | null) => void;
 }
@@ -10,6 +11,9 @@ interface IChatsContext {
 const initialState: IChatsContext = {
   contacts: [],
   activeChat: null,
+  setContacts: () => {
+    /*setContactsHandler*/
+  },
   addContact: () => {
     /* contactAddHandler */
   },
@@ -41,6 +45,7 @@ export const ChatsContextProvider: React.FC<React.PropsWithChildren> = ({
     <ChatsContext.Provider
       value={{
         contacts,
+        setContacts,
         activeChat,
         setActiveChat: activeChatSetter,
         addContact,

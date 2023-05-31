@@ -1,6 +1,18 @@
 @use "../../styles/variables.scss" as vars;
+@use "../../styles/mixins.scss";
+
 .root {
   display: flex;
   height: 90%;
   width: 90%;
+
+  @include mixins.vp-mobile {
+    width: calc(100% + #{vars.$pd-mobile * 2});
+    height: 100%;
+    margin-left: -#{vars.$pd-mobile};
+    margin-right: -#{vars.$pd-mobile};
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    flex-direction: column;
+  }
 }

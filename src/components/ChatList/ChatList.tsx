@@ -1,8 +1,8 @@
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 
 import ChatsContext from "../../context/ChatsContext";
 import { Button } from "../Button/Button";
-import { AddContactModal } from "../AddContactModal/AddContactModal";
+import { AddContactModal } from "../modals/AddContactModal/AddContactModal";
 import { ChatItem } from "../ChatItem/ChatItem";
 import { InfoMessage } from "../InfoMessage/InfoMessage";
 import { FaPlus } from "react-icons/fa";
@@ -11,7 +11,20 @@ import styles from "./ChatList.module.scss";
 
 export const ChatList: React.FC = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const { contacts } = useContext(ChatsContext);
+  const { contacts, setContacts } = useContext(ChatsContext);
+
+  useEffect(() => {
+    const storedContacts = JSON.parse(localStorage.getItem("contacts") || "[]");
+    if (storedContacts.length) {
+      setContacts(storedContacts);
+    }
+  }, [setContacts]);
+
+  useEffect(() => {
+    if (contacts.length) {
+      localStorage.setItem("contacts", JSON.stringify(contacts));
+    }
+  }, [contacts]);
 
   const modalCloseHandler = useCallback(() => {
     setModalVisible(false);
@@ -24,14 +37,16 @@ export const ChatList: React.FC = () => {
   return (
     <>
       <div className={styles.root}>
-        {contacts.length ? (
-          contacts.map((number) => <ChatItem key={number} tel={number} />)
-        ) : (
-          <InfoMessage>Добавьте контакты для начала общения</InfoMessage>
-        )}
+        <div className={styles.list}>
+          {contacts.length ? (
+            contacts.map((number) => <ChatItem key={number} tel={number} />)
+          ) : (
+            <InfoMessage>Добавьте контакты для начала общения</InfoMessage>
+          )}
+        </div>
         <Button onClick={modalOpenHandler} className={styles.addBtn}>
           <FaPlus />
-          Создать чат
+          <span>Создать чат</span>
         </Button>
       </div>
       {modalVisible && <AddContactModal onClose={modalCloseHandler} />}

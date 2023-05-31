@@ -1,8 +1,10 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
 import AuthContext from "../../context/AuthContext";
 import ChatsContext from "../../context/ChatsContext";
 import MessagesContext from "../../context/MessagesContext";
+import { sendMessage } from "../../services/greenapi";
+import { handleError } from "../../helpers/error";
 import { BsSend } from "react-icons/bs";
 import { Heading } from "../Heading/Heading";
 import { TextInput } from "../TextInput/TextInput";
@@ -11,12 +13,6 @@ import { Meassage } from "../Message/Meassage";
 import { InfoMessage } from "../InfoMessage/InfoMessage";
 
 import styles from "./ChatContent.module.scss";
-import {
-  deleteNotification,
-  recieveNotification,
-  sendMessage,
-} from "../../services/greenapi";
-import { handleError } from "../../helpers/error";
 
 export const ChatContent: React.FC = () => {
   const { getChatMessages, addMessage } = useContext(MessagesContext);
@@ -52,56 +48,6 @@ export const ChatContent: React.FC = () => {
     }
   };
 
-  const deleteNotificationHandler = useCallback(
-    async (receiptId: string) => {
-      try {
-        const data = await deleteNotification(
-          idInstance,
-          apiTokenInstance,
-          receiptId
-        );
-        return data;
-      } catch (error) {
-        handleError(error);
-      }
-    },
-    [apiTokenInstance, idInstance]
-  );
-
-  const recieveNotificationHandler = useCallback(async () => {
-    let deleted = false;
-    try {
-      const data = await recieveNotification(idInstance, apiTokenInstance);
-      if (data?.receiptId) {
-        const { result } = await deleteNotificationHandler(data.receiptId);
-        deleted = result;
-      }
-
-      if (
-        deleted &&
-        data?.body?.typeWebhook === "incomingMessageReceived" &&
-        data?.body?.messageData?.textMessageData?.textMessage
-      ) {
-        console.log(data);
-
-        addMessage({
-          type: "incoming",
-          chat: data.body.senderData.chatId.split("@")[0],
-          text: data.body.messageData.textMessageData.textMessage,
-          id: data.body.idMessage,
-          time: new Date().toLocaleTimeString("ru-Ru", { timeStyle: "short" }),
-        });
-      }
-    } catch (error) {
-      handleError(error);
-    }
-  }, [idInstance, apiTokenInstance, deleteNotificationHandler, addMessage]);
-
-  useEffect(() => {
-    const intervalId = setInterval(recieveNotificationHandler, 1000);
-    return () => clearInterval(intervalId);
-  }, [recieveNotificationHandler]);
-
   if (idInstance === "" || apiTokenInstance === "") {
     return (
       <InfoMessage>
@@ -113,7 +59,7 @@ export const ChatContent: React.FC = () => {
   return (
     <div className={styles.root}>
       <Heading level={3} className={styles.title}>
-        Переписка c {activeChat}
+        Переписка c +{activeChat}
       </Heading>
       <div className={styles.history}>
         <div className={styles.messages}>

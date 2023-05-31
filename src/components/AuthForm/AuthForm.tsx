@@ -1,8 +1,7 @@
 import { useCallback, useContext, useState } from "react";
 import { toast } from "react-toastify";
-import classNames from "classnames";
 
-import { checkStatus } from "../../services/greenapi";
+import { actualizeSettings, checkStatus } from "../../services/greenapi";
 import AuthContext from "../../context/AuthContext";
 import { Button } from "../Button/Button";
 import { Card } from "../Card/Card";
@@ -13,6 +12,7 @@ import { Spinner } from "../Spinner/Spinner";
 
 import styles from "./AuthForm.module.scss";
 import { handleError } from "../../helpers/error";
+import { QrModal } from "../modals/QrModal/QrModal";
 
 const INITIAL_STATE: IAuthData = {
   idInstance: import.meta.env.VITE_API_ID,
@@ -28,15 +28,18 @@ const MESSAGES = {
 };
 
 export const AuthForm: React.FC = () => {
-  const { logIn } = useContext(AuthContext);
+  const { logIn, setAuthorizationStatus } = useContext(AuthContext);
   const [formData, setFormData] = useState<IAuthData>(INITIAL_STATE);
   const [loading, setLoading] = useState(false);
+  const [qrModalVisible, setQrModalVisible] = useState(false);
 
   const inputChangeHandler: React.ChangeEventHandler<HTMLInputElement> =
     useCallback(({ target }) => {
       const { value, name } = target;
       setFormData((prev) => ({ ...prev, [name]: value }));
     }, []);
+
+  const qrModalCloseHandler = useCallback(() => setQrModalVisible(false), []);
 
   const submitHandler: React.FormEventHandler<HTMLFormElement> = useCallback(
     async (e) => {
@@ -50,7 +53,15 @@ export const AuthForm: React.FC = () => {
         );
 
         if (stateInstance === "authorized") {
+          await actualizeSettings(
+            formData.idInstance,
+            formData.apiTokenInstance
+          );
           logIn(formData);
+          setAuthorizationStatus(true);
+        } else if (stateInstance === "notAuthorized") {
+          logIn(formData);
+          setQrModalVisible(true);
         } else {
           toast.warning(MESSAGES[stateInstance]);
         }
@@ -60,15 +71,19 @@ export const AuthForm: React.FC = () => {
         setLoading(false);
       }
     },
-    [formData, logIn]
+    [formData, logIn, setAuthorizationStatus]
   );
 
   const resetHandler = useCallback(() => {
     setFormData(INITIAL_STATE);
   }, []);
 
+  if (qrModalVisible) {
+    return <QrModal onClose={qrModalCloseHandler} />;
+  }
+
   return (
-    <Card className={classNames(styles.root, "p-4")}>
+    <Card className={styles.root}>
       <h1>Авторизация</h1>
       {loading && <Spinner />}
       <form onSubmit={submitHandler}>

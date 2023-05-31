@@ -3,12 +3,18 @@ import { IAuthData } from "../types";
 
 interface IAuthContext {
   authData: IAuthData | null;
+  authorized: boolean;
+  setAuthorizationStatus: (status: boolean) => void;
   logIn: (data: IAuthData) => void;
   logOut: () => void;
 }
 
 const initialState: IAuthContext = {
   authData: null,
+  authorized: false,
+  setAuthorizationStatus: () => {
+    /*changeAuthorizationStatusHandler*/
+  },
   logIn: () => {
     /*loginHandler*/
   },
@@ -23,6 +29,7 @@ export const AuthContextProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const [authData, setAuthData] = useState<IAuthData | null>(null);
+  const [authorized, setAuthorized] = useState(false);
 
   const logIn = useCallback((data: IAuthData) => {
     setAuthData(data);
@@ -36,6 +43,8 @@ export const AuthContextProvider: React.FC<React.PropsWithChildren> = ({
     <AuthContext.Provider
       value={{
         authData,
+        authorized,
+        setAuthorizationStatus: setAuthorized,
         logIn,
         logOut,
       }}

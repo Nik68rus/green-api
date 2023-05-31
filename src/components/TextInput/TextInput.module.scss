@@ -40,10 +40,4 @@
       border-color: red;
     }
   }
-
-  @include mixins.vp-tablet {
-    input {
-      padding: 6px 12px;
-    }
-  }
 }

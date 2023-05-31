@@ -1,0 +1,28 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.info {
+  text-align: center;
+}
+
+.image {
+  width: 276px;
+  height: 276px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+.note {
+  text-align: center;
+  font-size: 10px;
+}
