@@ -6,11 +6,15 @@ import { Button } from "../Button/Button";
 import logo from "../../assets/logo.png";
 
 import styles from "./Header.module.scss";
-import { logout } from "../../services/greenapi";
+import { DEFAULT_API_ERROR, logout } from "../../services/greenapi";
 import { handleError } from "../../helpers/error";
+import ChatsContext from "../../context/ChatsContext";
+import MessagesContext from "../../context/MessagesContext";
 
 export const Header = () => {
   const { authData, logOut, setAuthorizationStatus } = useContext(AuthContext);
+  const { setContacts, setActiveChat } = useContext(ChatsContext);
+  const { setMessages } = useContext(MessagesContext);
 
   const logOutHandler = useCallback(async () => {
     if (authData) {
@@ -19,13 +23,27 @@ export const Header = () => {
           authData.idInstance,
           authData.apiTokenInstance
         );
-        isLogout && logOut();
-        isLogout && setAuthorizationStatus(false);
+
+        if (!isLogout) throw new Error(DEFAULT_API_ERROR);
+
+        logOut();
+        setAuthorizationStatus(false);
+        localStorage.removeItem("contacts");
+        setContacts([]);
+        setActiveChat(null);
+        setMessages([]);
       } catch (error) {
         handleError(error);
       }
     }
-  }, [authData, logOut, setAuthorizationStatus]);
+  }, [
+    authData,
+    logOut,
+    setAuthorizationStatus,
+    setContacts,
+    setMessages,
+    setActiveChat,
+  ]);
 
   return (
     <header className={styles.header}>

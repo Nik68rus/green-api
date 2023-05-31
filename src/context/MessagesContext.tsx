@@ -3,12 +3,16 @@ import { IMessage } from "../types";
 
 interface IMessagesContext {
   messages: IMessage[];
+  setMessages: (msgs: IMessage[]) => void;
   addMessage: (message: IMessage) => void;
   getChatMessages: (tel: string) => IMessage[];
 }
 
 const initialState: IMessagesContext = {
   messages: [],
+  setMessages: () => {
+    /* setMessagesHandler */
+  },
   addMessage: () => {
     /* addMessageHandler */
   },
@@ -34,7 +38,9 @@ export const MessagesContextProvider: React.FC<React.PropsWithChildren> = ({
   );
 
   return (
-    <MessagesContext.Provider value={{ messages, addMessage, getChatMessages }}>
+    <MessagesContext.Provider
+      value={{ messages, setMessages, addMessage, getChatMessages }}
+    >
       {children}
     </MessagesContext.Provider>
   );

@@ -15,8 +15,8 @@ import { handleError } from "../../helpers/error";
 import { QrModal } from "../modals/QrModal/QrModal";
 
 const INITIAL_STATE: IAuthData = {
-  idInstance: import.meta.env.VITE_API_ID,
-  apiTokenInstance: import.meta.env.VITE_API_TOKEN,
+  idInstance: import.meta.env.VITE_API_ID || "",
+  apiTokenInstance: import.meta.env.VITE_API_TOKEN || "",
 };
 
 const MESSAGES = {
